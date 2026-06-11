@@ -4,44 +4,55 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { background: transparent; }
-        .mole-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-        .hole { background: #1e293b; height: 90px; border-radius: 50%; position: relative; overflow: hidden; border: 2px solid #334155; }
-        .mole { font-size: 40px; position: absolute; bottom: -90px; left: 50%; transform: translateX(-50%); transition: bottom 0.1s ease; cursor: pointer; user-select: none; }
-        .mole.up { bottom: 10px; }
+        body { background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 90vh; }
+        .mole-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 20px; }
+        .hole { background: #1e293b; width: 140px; height: 140px; border-radius: 50%; position: relative; overflow: hidden; border: 5px solid #334155; box-shadow: inset 0 10px 0 rgba(0,0,0,0.5); }
+        .mole { font-size: 75px; position: absolute; bottom: -140px; left: 50%; transform: translateX(-50%); transition: bottom 0.18s ease-out; cursor: pointer; user-select: none; z-index: 5; }
+        .mole.up { bottom: 15px; } /* Đẩy chuột nhô lên khỏi hang */
     </style>
 </head>
 <body>
-    <h2>Đập Chuột Máy 🔨</h2>
-    <div style="font-size:1.1rem;">Điểm: <span id="mo-score">0</span></div>
-    <div class="mole-grid">
-        ${Array(9).fill().map(() => `<div class="hole"><div class="mole" onclick="whack(this)">🐹</div></div>`).join('')}
-    </div>
+    <h2 style="color: var(--accent-color);">Đập Chuột Máy 🔨</h2>
+    <div style="font-size: 1.3rem; margin-top: 5px;">Số chuột đã đập: <span id="mo-score" style="font-weight:bold;">0</span></div>
+    <div class="mole-grid" id="grid"></div>
 
     <script>
-        // Tự động render 9 ô chuột vì viết tĩnh trong iframe cho chắc chắn chạy
-        document.querySelector('.mole-grid').innerHTML = Array(9).fill('<div class="hole"><div class="mole" onclick="whack(this)">🐹</div></div>').join('');
+        const grid = document.getElementById('grid');
+        // Tạo tự động 9 hang chuột
+        grid.innerHTML = Array(9).fill('<div class="hole"><div class="mole" onclick="whack(this)">🐹</div></div>').join('');
         
-        let score = 0, lastHole;
+        let score = 0;
+        let lastMole = null;
+
         function peep() {
-            const holes = document.querySelectorAll('.hole');
-            let idx = Math.floor(Math.random() * holes.length);
-            while (holes[idx] === lastHole) { idx = Math.floor(Math.random() * holes.length); }
-            lastHole = holes[idx];
+            const moles = document.querySelectorAll('.mole');
+            let randomIdx = Math.floor(Math.random() * 9);
             
-            const mole = holes[idx].querySelector('.mole');
+            // Tránh việc một con chuột hiện lên liên tiếp ở 1 hang
+            while (moles[randomIdx] === lastMole) {
+                randomIdx = Math.floor(Math.random() * 9);
+            }
+            
+            const mole = moles[randomIdx];
+            lastMole = mole;
+            
             mole.classList.add('up');
-            
+
+            // Thời gian chuột ngoi lên ngẫu nhiên từ 700ms đến 1200ms rồi lặn xuống
             setTimeout(() => {
                 mole.classList.remove('up');
                 peep();
-            }, Math.random() * 400 + 700);
+            }, Math.random() * 500 + 700);
         }
+
         function whack(e) {
-            if(!e.classList.contains('up')) return;
-            score++; document.getElementById('mo-score').innerText = score;
-            e.classList.remove('up');
+            if(!e.classList.contains('up')) return; // Chuột chưa lên thì không đập được
+            score++; 
+            document.getElementById('mo-score').innerText = score;
+            e.classList.remove('up'); // Đập trúng lập tức thụt xuống
         }
+
+        // Bắt đầu chạy trò chơi
         peep();
     </script>
 </body>
