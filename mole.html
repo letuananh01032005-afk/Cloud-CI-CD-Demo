@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: transparent; }
+        .mole-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .hole { background: #1e293b; height: 90px; border-radius: 50%; position: relative; overflow: hidden; border: 2px solid #334155; }
+        .mole { font-size: 40px; position: absolute; bottom: -90px; left: 50%; transform: translateX(-50%); transition: bottom 0.1s ease; cursor: pointer; user-select: none; }
+        .mole.up { bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Đập Chuột Máy 🔨</h2>
+    <div style="font-size:1.1rem;">Điểm: <span id="mo-score">0</span></div>
+    <div class="mole-grid">
+        ${Array(9).fill().map(() => `<div class="hole"><div class="mole" onclick="whack(this)">🐹</div></div>`).join('')}
+    </div>
+
+    <script>
+        // Tự động render 9 ô chuột vì viết tĩnh trong iframe cho chắc chắn chạy
+        document.querySelector('.mole-grid').innerHTML = Array(9).fill('<div class="hole"><div class="mole" onclick="whack(this)">🐹</div></div>').join('');
+        
+        let score = 0, lastHole;
+        function peep() {
+            const holes = document.querySelectorAll('.hole');
+            let idx = Math.floor(Math.random() * holes.length);
+            while (holes[idx] === lastHole) { idx = Math.floor(Math.random() * holes.length); }
+            lastHole = holes[idx];
+            
+            const mole = holes[idx].querySelector('.mole');
+            mole.classList.add('up');
+            
+            setTimeout(() => {
+                mole.classList.remove('up');
+                peep();
+            }, Math.random() * 400 + 700);
+        }
+        function whack(e) {
+            if(!e.classList.contains('up')) return;
+            score++; document.getElementById('mo-score').innerText = score;
+            e.classList.remove('up');
+        }
+        peep();
+    </script>
+</body>
+</html>
