@@ -4,41 +4,53 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { background: transparent; }
-        .scoreboard { display: flex; justify-content: space-around; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; }
-        .quiz-box { font-size: 2.4rem; font-weight: bold; margin: 15px 0; }
-        .answer-input {
-            width: 100%; padding: 12px; font-size: 1.2rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.1); color: #fff; text-align: center; margin-bottom: 15px; outline: none;
-        }
-        .btn-submit { background: var(--accent-color); color: #000; font-weight: 700; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; }
+        body { background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; }
+        .game-wrapper { width: 100%; max-width: 400px; background: rgba(0,0,0,0.3); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .quiz-box { font-size: 4.5rem; font-weight: 800; margin: 25px 0; color: #fff; letter-spacing: 2px; }
+        .input-group { display: flex; gap: 12px; justify-content: center; }
+        .answer-input { width: 140px; padding: 15px; font-size: 1.8rem; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: #fff; text-align: center; outline: none; }
+        .btn-submit { background: var(--accent-color); color: #000; font-weight: 700; border: none; padding: 0 25px; border-radius: 12px; cursor: pointer; font-size: 1.1rem; }
+        .btn-submit:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
-    <h2>Math Quiz 🧠</h2>
-    <div class="scoreboard"><div>Điểm: <span id="m-score">0</span></div></div>
-    <div class="quiz-box" id="m-question">0 + 0 = ?</div>
-    <input type="number" id="m-input" class="answer-input" placeholder="Nhập số kết quả...">
-    <button class="btn-submit" onclick="checkAnswer()">Gửi đáp án</button>
+    <div class="game-wrapper">
+        <h2 style="color: var(--accent-color);">Math Quiz 🧠</h2>
+        <div style="font-size: 1.2rem; margin-top: 10px;">Điểm số: <span id="m-score" style="font-weight:bold;">0</span></div>
+        <div class="quiz-box" id="m-question">...</div>
+        <div class="input-group">
+            <input type="number" id="m-input" class="answer-input" placeholder="?">
+            <button class="btn-submit" onclick="checkAnswer()">Gửi</button>
+        </div>
+    </div>
 
     <script>
         let ans = 0, score = 0;
         function makeQ() {
-            const ops = ['+', '-', '*']; const op = ops[Math.floor(Math.random()*3)];
-            let n1 = Math.floor(Math.random()*20)+1, n2 = Math.floor(Math.random()*20)+1;
-            if(op==='+') ans = n1+n2;
-            if(op==='-') { if(n1<n2) [n1,n2]=[n2,n1]; ans = n1-n2; }
-            if(op==='*') { n1=Math.floor(Math.random()*9)+2; n2=Math.floor(Math.random()*9)+2; ans = n1*n2; }
-            document.getElementById('m-question').innerText = `${n1} ${op} ${n2} = ?`;
-            document.getElementById('m-input').value = ''; document.getElementById('m-input').focus();
+            const ops = ['+', '-', '*']; 
+            const op = ops[Math.floor(Math.random() * 3)];
+            let n1 = Math.floor(Math.random() * 20) + 1;
+            let n2 = Math.floor(Math.random() * 15) + 1;
+            
+            if (op === '+') ans = n1 + n2;
+            if (op === '-') { if(n1 < n2) [n1, n2] = [n2, n1]; ans = n1 - n2; }
+            if (op === '*') { n1 = Math.floor(Math.random() * 9) + 2; n2 = Math.floor(Math.random() * 9) + 2; ans = n1 * n2; }
+            
+            document.getElementById('m-question').innerText = `${n1} ${op} ${n2}`;
+            document.getElementById('m-input').value = ''; 
+            document.getElementById('m-input').focus();
         }
+
         function checkAnswer() {
-            const user = parseInt(document.getElementById('m-input').value);
-            if(isNaN(user)) return;
-            if(user === ans) { score += 10; document.getElementById('m-score').innerText = score; }
+            const input = document.getElementById('m-input');
+            if (parseInt(input.value) === ans) {
+                score += 10;
+            }
+            document.getElementById('m-score').innerText = score; 
             makeQ();
         }
-        document.getElementById('m-input').addEventListener('keyup', (e)=>{if(e.key==='Enter') checkAnswer();});
+
+        document.getElementById('m-input').addEventListener('keyup', (e) => { if(e.key === 'Enter') checkAnswer(); });
         makeQ();
     </script>
 </body>
