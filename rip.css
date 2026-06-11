@@ -6,9 +6,9 @@
     --btn-bg: #00f2fe;
     --btn-text: #000000;
     --shadow: rgba(0, 0, 0, 0.3);
+    --input-bg: rgba(255, 255, 255, 0.15);
 }
 
-/* Khi đổi sang chủ đề Sáng (Light Mode) */
 [data-theme="light"] {
     --bg-gradient: linear-gradient(135deg, #e0c3fc, #8ec5fc);
     --card-bg: rgba(255, 255, 255, 0.6);
@@ -16,6 +16,7 @@
     --btn-bg: #4f46e5;
     --btn-text: #ffffff;
     --shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: rgba(0, 0, 0, 0.05);
 }
 
 * {
@@ -35,13 +36,12 @@ body {
     padding: 20px;
 }
 
-/* --- THIẾT KẾ CARD HIỆU ỨNG KÍNH MỜ --- */
 .container {
     background: var(--card-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 40px;
+    padding: 30px;
     border-radius: 20px;
     width: 100%;
     max-width: 450px;
@@ -51,42 +51,67 @@ body {
     transition: all 0.3s ease;
 }
 
-.container:hover {
-    transform: translateY(-5px);
-}
-
 h1 {
     font-size: 1.8rem;
-    margin-bottom: 10px;
-    font-weight: 700;
+    margin-bottom: 5px;
 }
 
 .subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     opacity: 0.8;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
-/* Khu vực hiển thị thông điệp tương tác */
-.interactive-box {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 25px;
-    min-height: 100px;
+/* Khu vực hiển thị Điểm số */
+.scoreboard {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px dashed rgba(255, 255, 255, 0.3);
+    justify-content: space-around;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
 }
 
-#message {
-    font-size: 1.1rem;
-    font-style: italic;
-    line-height: 1.5;
+/* Khu vực hiển thị phép tính */
+.quiz-box {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 20px 0;
+    letter-spacing: 2px;
 }
 
-/* Nút bấm tương tác */
+/* Ô nhập câu trả lời */
+.answer-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: var(--input-bg);
+    color: var(--text-color);
+    text-align: center;
+    outline: none;
+    margin-bottom: 15px;
+    transition: all 0.3s;
+}
+
+.answer-input:focus {
+    border-color: var(--btn-bg);
+    box-shadow: 0 0 10px var(--btn-bg);
+}
+
+/* Khu vực thông báo đúng/sai */
+.feedback {
+    min-height: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.correct { color: #2ecc71; }
+.wrong { color: #e74c3c; }
+
+/* Nút bấm */
 .btn {
     background: var(--btn-bg);
     color: var(--btn-text);
@@ -96,10 +121,10 @@ h1 {
     font-weight: 600;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
     width: 100%;
     margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
 }
 
 .btn:hover {
@@ -107,11 +132,6 @@ h1 {
     transform: scale(1.02);
 }
 
-.btn:active {
-    transform: scale(0.98);
-}
-
-/* Nút đổi giao diện (Theme) */
 .theme-toggle {
     background: transparent;
     border: 1px solid var(--text-color);
