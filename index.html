@@ -11,7 +11,7 @@
 
     <div class="dashboard" id="main-menu">
         <h1>GAME HUB 🎮</h1>
-        <p class="subtitle">Hệ thống giải trí đa tệp tin tự động triển khai</p>
+        <p class="subtitle">Chọn một trò chơi để bắt đầu trải nghiệm</p>
         <div class="menu">
             <div class="game-card" onclick="openGame('math.html')">
                 <i class="fa-solid fa-calculator"></i>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="dashboard hidden" id="game-container">
-        <button class="btn-back" onclick="closeGame()">⬅ Quay lại Menu</button>
+        <button class="btn-back" onclick="closeGame()">⬅ Quay lại Menu chính</button>
         <iframe id="game-frame" src=""></iframe>
     </div>
 
@@ -37,13 +37,13 @@
         function openGame(pageUrl) {
             document.getElementById('main-menu').classList.add('hidden');
             document.getElementById('game-container').classList.remove('hidden');
-            document.getElementById('game-frame').src = pageUrl; // Nạp file game
+            document.getElementById('game-frame').src = pageUrl; // Tải file game lên
         }
 
         function closeGame() {
             document.getElementById('game-container').classList.add('hidden');
             document.getElementById('main-menu').classList.remove('hidden');
-            document.getElementById('game-frame').src = ""; // Giải phóng bộ nhớ game
+            document.getElementById('game-frame').src = ""; // Reset trò chơi cũ
         }
     </script>
 </body>
